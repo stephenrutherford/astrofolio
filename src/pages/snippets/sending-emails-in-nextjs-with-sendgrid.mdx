@@ -1,0 +1,170 @@
+---
+layout: "../../layouts/Content.astro"
+title: "Sending Emails in Next.js with SendGrid"
+# description: "n/a"
+pubDate: "Feb 20 2022"
+# heroImage: "/placeholder-hero.jpg"
+---
+
+# {frontmatter.title}
+
+## Getting Started
+
+Create a [SendGrid account](https://signup.sendgrid.com/) and generate an [API key](https://app.sendgrid.com/login?redirect_to=%2Fguide%2Fintegrate%2Flangs%2Fnodejs).
+
+## Environment Variables
+
+```jsx
+// .env.local
+
+SENDGRID_API_KEY = "SG.abc123...";
+```
+
+## Next.js API Route
+
+```jsx
+// mail.js
+import sendgrid from "@sendgrid/mail";
+
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+
+export default async (req, res) => {
+  const body = JSON.parse(req.body);
+
+  const message = `
+        Name: ${body.name}\r\n
+        Email: ${body.email}\r\n
+        Message: ${body.message}
+    `;
+
+  const data = {
+    to: "your_email@email.com",
+    from: "your_email@email.com",
+    subject: "[Website Name] Contact Form - New Message",
+    text: message,
+    html: message.replace(/\r\n/g, "<br>"),
+  };
+
+  sendgrid.send(data);
+
+  return res.status(200).json({ status: "Ok" });
+};
+```
+
+## Contact Form
+
+```jsx
+// Contact.js
+import { useState } from 'react'
+
+function Contact() {
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [message, setMessage] = useState('')
+    const [submitted, setSubmitted] = useState(false)
+    const [status, setStatus] = useState('')
+
+    async function handleOnSubmit(e) {
+        e.preventDefault();
+        const formData = {
+            name,
+            email,
+            message
+        }
+
+        setSubmitted(true)
+
+        fetch('/api/mail', {
+            method: 'post',
+            body: JSON.stringify(formData)
+        }).then((res) => {
+            if (res.status === 200) {
+                setSubmitted(false)
+                setName('')
+                setEmail('')
+                setMessage('')
+                setStatus('success')
+            }
+            else {
+                setStatus('error')
+            }
+        })
+    }
+
+    return (
+        ...
+    )
+}
+
+export default Contact
+```
+
+```jsx
+// Contact.js
+<form action="submit" method="POST" onSubmit={handleOnSubmit}>
+  <Stack>
+    <FormControl id="name" isRequired>
+      <FormLabel>Name:</FormLabel>
+      <Input
+        type="text"
+        value={name}
+        onChange={(e) => {
+          setName(e.target.value);
+        }}
+      />
+    </FormControl>
+    <FormControl id="email" isRequired>
+      <FormLabel>Email address:</FormLabel>
+      <Input
+        type="email"
+        value={email}
+        onChange={(e) => {
+          setEmail(e.target.value);
+        }}
+      />
+    </FormControl>
+    <FormControl id="text" isRequired>
+      <FormLabel>Message:</FormLabel>
+      <Textarea
+        placeholder="Here is a sample placeholder"
+        value={message}
+        onChange={(e) => {
+          setMessage(e.target.value);
+        }}
+      />
+    </FormControl>
+    <Button type="submit" isLoading={submitted} loadingText="Submitting">
+      SUBMIT
+    </Button>
+  </Stack>
+</form>
+```
+
+## Form Validation & Feedback
+
+```jsx
+// Contact.js
+<Button type="submit"
+    isLoading={submitted}
+    loadingText="Submitting"
+>
+    SUBMIT
+</Button>
+
+<Flex>
+    {status === "success" ?
+        <Alert status="success">
+            <AlertIcon />
+            <AlertTitle mr={2}>Success!</AlertTitle>
+            <AlertDescription>Your email has been sent.</AlertDescription>
+        </Alert>
+        : status === "error" ?
+            <Alert status="error">
+                <AlertIcon />
+                <AlertTitle mr={2}>Error!</AlertTitle>
+                <AlertDescription>Your email was unable to be sent.</AlertDescription>
+            </Alert>
+            : null
+    }
+</Flex>
+```

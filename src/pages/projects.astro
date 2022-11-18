@@ -1,0 +1,40 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Main from "../layouts/Main.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
+import { Image } from "@astrojs/image/components";
+import { Picture } from "@astrojs/image/components";
+import rocket from "../assets/ph.jpg";
+import placeholder from "../assets/words.png";
+import test from "../assets/ph.png";
+// import ph from "../assets/ph_01.avif";
+// Use Astro.glob() to fetch all posts, and then sort them by date.
+import CardProjects from "../components/CardProjects.astro";
+const posts = (await Astro.glob("./projects/*.{md,mdx}")).sort(
+  (a, b) =>
+    new Date(b.frontmatter.pubDate).valueOf() -
+    new Date(a.frontmatter.pubDate).valueOf()
+);
+---
+
+<!DOCTYPE html>
+<Main>
+  <div class="col-span-6 space-y-10 min-h-screen">
+    <!-- Start Articles -->
+    <div class="flex flex-col gap-10">
+      {
+        posts.map((post) => (
+          <CardProjects
+            title={post.frontmatter.title}
+            alt={post.frontmatter.title}
+            heroImage={post.frontmatter.heroImage}
+            url={post.url}
+          />
+        ))
+      }
+    </div>
+    <!-- End Articles -->
+  </div>
+</Main>

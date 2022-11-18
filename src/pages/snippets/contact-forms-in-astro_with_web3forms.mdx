@@ -1,0 +1,127 @@
+---
+layout: "../../layouts/Content.astro"
+title: "Contact Forms in Astro with Web3Forms"
+# description: "n/a"
+pubDate: "Nov 18 2022"
+# heroImage: "/placeholder-hero.jpg"
+---
+
+# {frontmatter.title}
+
+## Prerequisites
+
+- [Web3Forms](https://web3forms.com/) Access Key
+
+Note: Replace the form value `abc123` with your own.
+
+## Form & Styling with Tailwind CSS
+
+```jsx
+<form
+  id="form"
+  action="https://api.web3forms.com/submit"
+  method="POST"
+  class="flex w-full max-w-xl flex-col gap-4"
+>
+  <input type="hidden" name="access_key" value="abc123" />
+  <label class="flex flex-col">
+    Your name:
+    <input
+      type="text"
+      name="name"
+      placeholder="John Doe"
+      class="contact-input"
+    />
+  </label>
+  <label class="flex flex-col">
+    Your email:
+    <input
+      type="email"
+      name="email"
+      placeholder="you@company.com"
+      class="contact-input"
+    />
+  </label>
+  <label class="flex flex-col">
+    Your message:
+    <textarea
+      name="message"
+      rows="5"
+      placeholder="Your Message"
+      class="contact-input"
+    ></textarea>
+  </label>
+  <button
+    id="button"
+    type="submit"
+    class="flex max-w-[150px] justify-center border border-gray-400 pt-2 pb-2 text-gray-400 hover:border-gray-300 hover:text-gray-300"
+  >
+    Send
+  </button>
+</form>
+```
+
+## Form Feedback
+
+```jsx
+<form>
+  ...
+  <div id="result" class="flex p-2 text-gray-400"></div>
+</form>
+```
+
+## Form Reset and Redirection
+
+Modified from the [official docs](https://docs.web3forms.com/how-to-guides/html-and-javascript).
+
+```jsx
+<form>
+...
+  <script>
+    const form = document.getElementById("form");
+    const result = document.getElementById("result");
+    const button = document.getElementById("button");
+
+    form.addEventListener("submit", function (e) {
+      const formData = new FormData(form);
+      e.preventDefault();
+      var object = {};
+      formData.forEach((value, key) => {
+        object[key] = value;
+      });
+      var json = JSON.stringify(object);
+      result.innerHTML = "Please wait...";
+      button.disabled = true;
+
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: json,
+      })
+        .then(async (response) => {
+          let json = await response.json();
+          if (response.status == 200) {
+            result.innerHTML = json.message;
+          } else {
+            console.log(response);
+            result.innerHTML = json.message;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          result.innerHTML = "Something went wrong!";
+        })
+        .then(function () {
+          setTimeout(() => {
+            result.style.display = "none";
+          }, 3000);
+          form.reset();
+          button.disabled = false;
+        });
+    });
+  </script>
+</form>
+```

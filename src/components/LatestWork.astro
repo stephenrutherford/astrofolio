@@ -1,0 +1,37 @@
+---
+import Typescript from "./icons/Typescript.astro";
+import Next from "./icons/Next.astro";
+import Prisma from "./icons/Prisma.astro";
+---
+
+<div class={`flex flex-col items-center`}>
+  <p class="text-3xl font-bold uppercase">Things I've Built</p>
+  <!-- * Wrapper -->
+  <div class="grid grid-cols-3 gap-4 w-full mt-10">
+    <!-- ? Component -->
+    <div
+      class="flex flex-col p-6 gap-10 bg-brand-secondary h-[300px] col-span-1 items-center justify-center border border-brand-tertiary"
+    >
+      <p class="text-5xl">Timeline</p>
+      <p class="text-xl text-center text-gray-400">
+        Proident laboris nisi quis reprehenderit Lorem est elit ipsum.
+      </p>
+      <div class="flex flex-row gap-4">
+        <Typescript />
+        <Next />
+        <!-- <Trpc /> -->
+        <Prisma />
+      </div>
+    </div>
+    <div
+      class="flex bg-brand-secondary text-2xl h-[300px] col-span-1 items-center justify-center"
+    >
+      Domain Checker
+    </div>
+    <div
+      class="flex bg-brand-secondary text-2xl h-[300px] col-span-1 items-center justify-center"
+    >
+      Fraud Dashboard
+    </div>
+  </div>
+</div>

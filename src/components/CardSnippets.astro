@@ -1,0 +1,20 @@
+---
+const { url, title, pubDate } = Astro.props;
+---
+
+<a href={url}>
+  <div class="card-article-container">
+    <p class="">{title}</p>
+    <p class="card-article-date">
+      <time datetime={pubDate}>
+        {
+          new Date(pubDate).toLocaleDateString("en-us", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })
+        }
+      </time>
+    </p>
+  </div>
+</a>

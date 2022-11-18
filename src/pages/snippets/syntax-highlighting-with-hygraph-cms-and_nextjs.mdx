@@ -1,0 +1,88 @@
+---
+layout: "../../layouts/Content.astro"
+title: "Syntax Highlighting RichText with Hygraph CMS and Next.js"
+# description: "n/a"
+pubDate: "Feb 21 2022"
+# heroImage: "/placeholder-hero.jpg"
+---
+
+# {frontmatter.title}
+
+## Prerequisites
+
+- [highlight.js](https://highlightjs.org/)
+- [Hygraph CMS Rich Text Renderer](https://github.com/hygraph/rich-text/tree/main/packages/react-renderer)
+- (Optional) [Tailwind CSS](https://tailwindcss.com/) with [Typography Plugin](https://tailwindcss.com/docs/typography-plugin)
+
+## \_app.js Configuration
+
+```jsx
+// _app.js
+
+import "highlight.js/styles/base16/material-darker.css";
+```
+
+## Layout Configuration
+
+```jsx
+// Layout.js;
+
+import { useEffect } from "react";
+import hljs from "highlight.js";
+import javascript from "highlight.js/lib/languages/javascript";
+hljs.registerLanguage("javascript", javascript);
+
+function Layout({ children }) {
+  useEffect(() => {
+    hljs.highlightAll();
+  }, [{ children }]);
+
+  return (
+    <div>
+      <main className="container">
+        <Navbar />
+        {children}
+        <Footer />
+      </main>
+    </div>
+  );
+}
+
+export default Layout;
+```
+
+## Syntax Highlighting
+
+```jsx
+// GraphQl Function
+
+content {
+  raw
+}
+```
+
+```jsx
+// [slug].js
+
+import { RichText } from "@graphcms/rich-text-react-renderer";
+
+function ArticlePage({ article }) {
+  return (
+    <div className="container prose prose-lg">
+      <h1>{article.title}</h1>
+      <RichText
+        content={article.content.raw.children}
+        renderers={{
+          code_block: ({ children }) => (
+            <pre>
+              <code className="js">{children}</code>
+            </pre>
+          ),
+        }}
+      />
+    </div>
+  );
+}
+
+export default ArticlePage;
+```

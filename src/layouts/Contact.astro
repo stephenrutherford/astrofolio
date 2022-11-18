@@ -1,0 +1,37 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+// import Hero from "../components/Hero.astro";
+// import LatestWork from "../components/LatestWork.astro";
+// import LatestArticles from "../components/LatestArticles.astro";
+// import Contact from "../components/Contact.astro";
+import "@fontsource/source-sans-3";
+import "@fontsource/roboto";
+
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_WIDTH } from "../config";
+---
+
+<html lang="en-us">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+
+  <body class="flex flex-col scrollbar-hide">
+    <main
+      class={`container ${SITE_WIDTH} min-h-[calc(100vh-0rem)] grid grid-cols-1 mt-10 p-4 lg:grid-cols-8 lg:mt-20 xl:p-0`}
+    >
+      <Header />
+      <div
+        class="flex flex-col col-span-6 min-h-screen items-center lg:items-start"
+      >
+        <div
+          class="prose prose-invert prose-xl prose-a:text-gray-400 hover:prose-a:text-gray-300"
+        >
+          <slot />
+        </div>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

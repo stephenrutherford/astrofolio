@@ -1,0 +1,103 @@
+---
+layout: "../../layouts/Content.astro"
+title: "Integrating Chakra-UI components with Next.js MDX"
+# description: "n/a"
+pubDate: "Feb 19 2022"
+# heroImage: "/placeholder-hero.jpg"
+---
+
+# {frontmatter.title}
+
+## Prerequisites
+
+- [Chakra-UI](https://chakra-ui.com/getting-started)
+- [Next MDX](https://mdxjs.com/docs/getting-started/#nextjs)
+- [React-Syntax-Highlighter](https://www.npmjs.com/package/react-syntax-highlighter)
+
+Tip: Install a [MDX extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) in VSCode for better readability.
+
+## next.config.js Configuration
+
+```jsx
+// next.config.js
+
+const withMDX = require("@next/mdx")({
+  extension: /\.mdx?$/,
+});
+module.exports = withMDX({
+  pageExtensions: ["js", "jsx", "md", "mdx"],
+});
+```
+
+## \_app.js Configuration
+
+```jsx
+// _app.js
+
+import { ChakraProvider, Text, Heading, UnorderedList, ListItem, Link, ... } from "@chakra-ui/react"
+import { MDXProvider } from '@mdx-js/react';
+import LandingPage from '../components/LandingPage'
+
+const components = {
+    h1: (props) => (
+        <Heading fontSize="3xl" mt={10} color='#00abe9'>
+            {props.children}
+        </Heading>
+    ),
+    h2: (props) => (
+        <Heading fontSize="xl" mt={10}>
+            {props.children}
+        </Heading>
+    ),
+    h3: (props) => (
+        <Heading fontSize="md" mt={5}>
+            {props.children}
+        </Heading>
+    ),
+    ul: (props) => <UnorderedList pl={8}>{props.children}</UnorderedList>,
+    ol: (props) => <OrderedList pl={8}>{props.children}</OrderedList>,
+    li: (props) => <ListItem>{props.children}</ListItem>,
+    p: (props) => <Text lineHeight='2rem'>{props.children}</Text>,
+    hr: (props) => <Divider mt={5}>{props.children}</Divider>,
+    inlineCode: (props) => <Code fontWeight='bold'>{props.children}</Code>,
+    a: (props) => <Link fontWeight='bold' color='#00abe9' _hover={{ textDecoration: 'underline' }} href={props.href} isExternal>{props.children}</Link >,
+    LandingPage
+};
+
+function MyApp({ Component, pageProps }) {
+    return (
+        <ChakraProvider theme={customTheme}>
+            <MDXProvider components={components}>
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
+            </MDXProvider>
+        </ChakraProvider>
+    )
+}
+
+export default MyApp
+```
+
+## Syntax Highlighting
+
+```jsx
+// blogpost.mdx
+
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
+import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism"
+import LandingPage from '../../components/LandingPage'
+
+# H1
+## H2
+
+<LandingPage />
+
+<SyntaxHighlighter language='jsx' style={materialDark}>
+{`export async function getStaticProps(context) {
+    return {
+        props: {}, // will be passed to the page component as props
+    }
+}`}
+</SyntaxHighlighter>
+```

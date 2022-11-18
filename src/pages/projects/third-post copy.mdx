@@ -1,0 +1,180 @@
+---
+layout: "../../layouts/Content.astro"
+title: "Copy One"
+description: "A fraud investigation tool used to check for invalid and disposable email domains."
+pubDate: "Feb 01 2022"
+heroImage: "../src/assets/ph.png"
+---
+
+# {frontmatter.title}
+
+<img src={frontmatter.heroImage} />
+
+- [GitHub](https://github.com/stephenrutherford/dc3)
+- [Live Demo](https://dc3.vercel.app/)
+
+## Overview
+
+A fraud investigation tool used to check for invalid and disposable email domains.
+
+## Features
+
+The app was built with Node and JavaScript in Next.js using the official API provided by [check-mail.org](check-mail.org). The user can paste in the domains that they want to check, and the App will render a results table with additional columns that contain data of interest.
+
+- Type - If the domain is considered disposable or not.
+- Block - The domain is not disposable, but is high risk and should be blocked anyway.
+
+An export button was also included for larger queries. The user may want to download the entire results table as a CSV file for filtering and spreadsheet lookups.
+
+## Tech Specs
+
+I am using Next API routes as a server-side solution for the API endpoints. This takes additional load off the client with the additional bonus of keeping our API secrets hidden from the browser client.
+
+The API endpoint receives an array of email domains then does a web request for each of these items. We return a `Promise.all()` event once the individual requests have completed and merge the specific data fields into a new JSON object. This JSON object is sent back to the client as a HTTP "200" response.
+
+On the client side, we are waiting for this HTTP "200" response before the table of results can be updated. The form data is managed via React Hooks which will be updated upon a successful API request.
+
+## API routes
+
+```jsx
+// api/search.js
+
+export default async (req, res) => {
+  const body = JSON.parse(req.body);
+
+  var axios = require("axios").default;
+
+  const promiseArray = body.map((Item) => {
+    return axios({
+      method: "GET",
+      url: "https://mailcheck.p.rapidapi.com/",
+      headers: {
+        "x-rapidapi-host": "mailcheck.p.rapidapi.com",
+        "x-rapidapi-key": `${process.env.API_KEY}`,
+      },
+      params: {
+        domain: Item,
+      },
+    });
+  });
+
+  const mergedArray = [].concat
+    .apply([], await axios.all(promiseArray))
+    .map((e) => e.data);
+
+  return await res.status(200).json(mergedArray);
+};
+```
+
+## Frontend
+
+```jsx
+// index.js
+import Head from 'next/head'
+import { Flex, Link, Heading, Stack, ... } from "@chakra-ui/react"
+import { Select } from "@chakra-ui/select"
+import { useState } from 'react'
+import { CSVLink } from "react-csv";
+
+export default function Home() {
+
+    const [domains, setDomains] = useState([])
+    const [input, setInput] = useState('')
+    const [delimiter, setDelimiter] = useState(' ')
+
+    async function handleOnSubmit(e) {
+    e.preventDefault();
+
+    let arr = input.split(delimiter)
+
+    // Removes whitespace from array
+    arr = arr.filter(function (str) {
+        return /S/.test(str)
+    })
+
+    const postsResponse = await fetch("/api/search", {
+        method: 'post',
+        body: JSON.stringify(arr)
+    })
+    const postsData = await postsResponse.json()
+    setDomains(postsData)
+
+    }
+
+return (
+    <Flex minW='100vw' minH='100vh' justifyContent='center'>
+        <Head>
+            <title>Domain Checker v3</title>
+            <meta name="description" content="A tool to check for disposable and invalid domains." />
+            <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Stack>
+            <Heading>
+                Domain Checker v3
+            </Heading>
+            {/* Input Form */}
+            <Flex>
+                <form onSubmit={handleOnSubmit}>
+                    <Flex>
+                    <Input
+                        value={input} onChange={(e) => { setInput(e.target.value) }}
+                        isRequired
+                    />
+                    <Select
+                        onChange={(e) => { setDelimiter(e.target.value) }}
+                        isRequired
+                        defaultValue=" "
+                    >
+                        <option value=" ">Space</option>
+                        <option value=",">Comma</option>
+                    </Select>
+                    </Flex>
+                </form>
+            </Flex>
+            {/* Results Table */}
+            <Flex
+                display={domains.length > 0 ? 'inherit' : 'none'}>
+            <Table>
+                <Thead>
+                    <Tr>
+                        <Th>Domain</Th>
+                        <Th>Disposable</Th>
+                        <Th>Block</Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
+                {domains.map((e) => (
+                    <Tr key={e.domain}>
+                    <Td>
+                        <Link
+                        href={`https://check-mail.org/domain/${e.domain}`}
+                        isExternal
+                        >
+                            {e.domain}
+                        </Link>
+                    </Td>
+                    <Td>{e.disposable ? e.disposable.toString().toUpperCase() : ""}</Td>
+                    <Td>{e.block ? e.block.toString().toUpperCase() : ""}</Td>
+                    </Tr>
+                ))}
+                </Tbody>
+                <Tfoot>
+                <Tr>
+                    <Th>Domain</Th>
+                    <Th>Disposable</Th>
+                    <Th>Block</Th>
+                </Tr>
+                </Tfoot>
+            </Table>
+            </Flex>
+            {/* CSV Download */}
+            <CSVLink filename={"domain_results.csv"} data={domains.map((e) => (e))}>
+                <Button display={domains.length > 0 ? 'inherit' : 'none'}>
+                    Download as CSV
+                </Button>
+            </CSVLink>
+        </Stack>
+    </Flex >
+  )
+}
+```

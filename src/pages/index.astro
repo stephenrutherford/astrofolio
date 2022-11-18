@@ -1,0 +1,64 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Main from "../layouts/Main.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
+import { Image } from "@astrojs/image/components";
+import { Picture } from "@astrojs/image/components";
+import rocket from "../assets/ph.jpg";
+import placeholder from "../assets/words.png";
+import test from "../assets/ph.png";
+// import ph from "../assets/ph_01.avif";
+import CardProjects from "../components/CardProjects.astro";
+import CardSnippets from "../components/CardSnippets.astro";
+
+const projectPosts = (await Astro.glob("./projects/*.{md,mdx}"))
+  .slice(0, 2)
+  .sort(
+    (a, b) =>
+      new Date(b.frontmatter.pubDate).valueOf() -
+      new Date(a.frontmatter.pubDate).valueOf()
+  );
+const snippetPosts = (await Astro.glob("./snippets/*.{md,mdx}"))
+  .slice(0, 4)
+  .sort(
+    (a, b) =>
+      new Date(b.frontmatter.pubDate).valueOf() -
+      new Date(a.frontmatter.pubDate).valueOf()
+  );
+---
+
+<!DOCTYPE html>
+<Main>
+  <div class="col-span-6 space-y-10 min-h-screen">
+    <!-- Start Projects -->
+    <div class="flex flex-col gap-10">
+      {
+        projectPosts.map((project) => (
+          <CardProjects
+            title={project.frontmatter.title}
+            alt={project.frontmatter.title}
+            heroImage={project.frontmatter.heroImage}
+            url={project.url}
+          />
+        ))
+      }
+    </div>
+    <!-- End projects -->
+
+    <!-- Start Articles -->
+    <div class="grid grid-cols-2 gap-10">
+      {
+        snippetPosts.map((snippet) => (
+          <CardSnippets
+            title={snippet.frontmatter.title}
+            url={snippet.url}
+            pubDate={snippet.frontmatter.pubDate}
+          />
+        ))
+      }
+    </div>
+    <!-- End Articles -->
+  </div>
+</Main>

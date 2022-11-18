@@ -1,0 +1,120 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Contact from "../layouts/Main.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
+import { Image } from "@astrojs/image/components";
+import { Picture } from "@astrojs/image/components";
+import rocket from "../assets/ph.jpg";
+import placeholder from "../assets/words.png";
+import test from "../assets/ph.png";
+const linkedin_url = import.meta.env.PUBLIC_LINKEDIN_URL;
+---
+
+<!DOCTYPE html>
+<Contact>
+  <div class="col-span-6 space-y-10 min-h-screen">
+    <div
+      class="flex flex-col prose prose-xl prose-invert prose-a:text-gray-400 hover:prose-a:text-gray-300 items-center lg:items-start max-w-none"
+    >
+      <h1 class="">Contact</h1>
+      <p class="max-w-xl">
+        Please use the contact form below and I will reply back to you as soon
+        as possible. Alternatively, you can message me on
+        <a href={linkedin_url}>LinkedIn</a> as well.
+      </p>
+      <form
+        id="form"
+        action="https://api.web3forms.com/submit"
+        method="POST"
+        class="flex flex-col gap-4 w-full max-w-xl"
+      >
+        <input
+          type="hidden"
+          name="access_key"
+          value="ee4787f6-b714-41fa-8ed2-c0031deac627"
+        />
+        <label class="flex flex-col">
+          Your name:
+          <input
+            type="text"
+            name="name"
+            placeholder="John Doe"
+            class="contact-input"
+          />
+        </label>
+        <label class="flex flex-col">
+          Your email:
+          <input
+            type="email"
+            name="email"
+            placeholder="you@company.com"
+            class="contact-input"
+          />
+        </label>
+        <label class="flex flex-col">
+          Your message:
+          <textarea
+            name="message"
+            rows="5"
+            placeholder="Your Message"
+            class="contact-input"></textarea>
+        </label>
+        <button
+          id="button"
+          type="submit"
+          class="flex justify-center max-w-[150px] pt-2 pb-2 text-gray-400 hover:text-gray-300 border border-gray-400 hover:border-gray-300"
+          >Send</button
+        >
+        <div id="result" class="flex p-2 text-gray-400"></div>
+        <script>
+          const form = document.getElementById("form");
+          const result = document.getElementById("result");
+          const button = document.getElementById("button");
+
+          form.addEventListener("submit", function (e) {
+            const formData = new FormData(form);
+            e.preventDefault();
+            var object = {};
+            formData.forEach((value, key) => {
+              object[key] = value;
+            });
+            var json = JSON.stringify(object);
+            result.innerHTML = "Please wait...";
+            button.disabled = true;
+
+            fetch("https://api.web3forms.com/submit", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: json,
+            })
+              .then(async (response) => {
+                let json = await response.json();
+                if (response.status == 200) {
+                  result.innerHTML = json.message;
+                } else {
+                  console.log(response);
+                  result.innerHTML = json.message;
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+                result.innerHTML = "Something went wrong!";
+              })
+              .then(function () {
+                setTimeout(() => {
+                  result.style.display = "none";
+                }, 3000);
+                form.reset();
+                button.disabled = false;
+              });
+          });
+        </script>
+      </form>
+    </div>
+  </div>
+</Contact>

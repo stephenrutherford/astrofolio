@@ -1,0 +1,17 @@
+---
+import { Image } from "@astrojs/image/components";
+const { url, heroImage, title } = Astro.props;
+---
+
+<a href={url}>
+  <div class="card-project-container -z-10">
+    <Image
+      class="card-project-image"
+      width={960}
+      height={400}
+      src={heroImage}
+      alt={title}
+    />
+    <p class="card-project-text">{title}</p>
+  </div>
+</a>
