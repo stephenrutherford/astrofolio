@@ -11,18 +11,15 @@ import image from "@astrojs/image";
 import prefetch from "@astrojs/prefetch";
 
 // https://astro.build/config
+import alpinejs from "@astrojs/alpinejs";
+
+// https://astro.build/config
 export default defineConfig({
   site: "https://rutherford.dev",
-  integrations: [
-    mdx(),
-    sitemap(),
-    tailwind(),
-    image(),
-    prefetch({
-      // Allow up to three links to be prefetched concurrently
-      throttle: 3,
-    }),
-  ],
+  integrations: [mdx(), sitemap(), tailwind(), image(), prefetch({
+    // Allow up to three links to be prefetched concurrently
+    throttle: 3
+  }), alpinejs()],
   output: "server",
   adapter: vercel(),
   markdown: {
@@ -35,13 +32,13 @@ export default defineConfig({
       // https://github.com/shikijs/shiki/blob/main/docs/languages.md
       langs: [],
       // Enable word wrap to prevent horizontal scrolling
-      wrap: true,
-    },
+      wrap: true
+    }
   },
   // astro-icon
   vite: {
     ssr: {
-      external: ["svgo"],
-    },
-  },
+      external: ["svgo"]
+    }
+  }
 });

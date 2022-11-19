@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@astrojs/alpinejs': ^0.1.2
   '@astrojs/image': ^0.5.1
   '@astrojs/mdx': ^0.10.3
   '@astrojs/prefetch': ^0.1.1
@@ -13,6 +14,8 @@ specifiers:
   '@mdx-js/rollup': ^2.1.5
   '@sendgrid/mail': ^7.7.0
   '@tailwindcss/typography': ^0.5.8
+  '@types/alpinejs': ^3.0.0
+  alpinejs: ^3.0.0
   astro: ^1.6.8
   astro-icon: ^0.7.3
   prettier: ^2.7.1
@@ -23,11 +26,14 @@ specifiers:
   tailwindcss: ^3.2.4
 
 dependencies:
+  '@astrojs/alpinejs': 0.1.2_epas4sveda2fzipjieohqzpxgq
   '@astrojs/image': 0.5.1
   '@astrojs/prefetch': 0.1.1
   '@fontsource/roboto': 4.5.8
   '@fontsource/source-sans-3': 4.5.11
   '@sendgrid/mail': 7.7.0
+  '@types/alpinejs': 3.7.1
+  alpinejs: 3.10.5
   astro-icon: 0.7.3
   tailwind-scrollbar-hide: 1.1.7
 
@@ -59,6 +65,16 @@ packages:
       '@jridgewell/gen-mapping': 0.1.1
       '@jridgewell/trace-mapping': 0.3.17
     dev: true
+
+  /@astrojs/alpinejs/0.1.2_epas4sveda2fzipjieohqzpxgq:
+    resolution: {integrity: sha512-pcy+r7TTeFMbdZpRUuOYbf5L3ccFp107gH9j0Hdl5z8hmrSw9918pxkK1tiAcbwrQKxifv7nM5V5FJKu7SoJrw==}
+    peerDependencies:
+      '@types/alpinejs': ^3.0.0
+      alpinejs: ^3.0.0
+    dependencies:
+      '@types/alpinejs': 3.7.1
+      alpinejs: 3.10.5
+    dev: false
 
   /@astrojs/compiler/0.29.16:
     resolution: {integrity: sha512-1CCf+dktc8IQCdmsNNSIor3rcJE5OIirFnFtQWp1VUxqCacefqRRlsl9lH7JcKKpRvz1taL43yHYJP8dxNfVww==}
@@ -719,6 +735,12 @@ packages:
       '@types/estree': 1.0.0
     dev: true
 
+  /@types/alpinejs/3.7.1:
+    resolution: {integrity: sha512-gzwyuHXH/meGQQhurMGWlZgMQxe18lMOoSPd7X6CvGoDelHte9EsU7SpTIoRu8yYir0tbHDeaSMdX9LeQz/QtA==}
+    dependencies:
+      '@vue/reactivity': 3.2.45
+    dev: false
+
   /@types/babel__core/7.1.20:
     resolution: {integrity: sha512-PVb6Bg2QuscZ30FvOU7z4guG6c926D9YRvOxEaelzndpMsvP+YM74Q/dAFASpg2l6+XLalxSGxcq/lrgYWZtyQ==}
     dependencies:
@@ -861,6 +883,26 @@ packages:
       vscode-uri: 2.1.2
     dev: true
 
+  /@vue/reactivity/3.1.5:
+    resolution: {integrity: sha512-1tdfLmNjWG6t/CsPldh+foumYFo3cpyCHgBYQ34ylaMsJ+SNHQ1kApMIa8jN+i593zQuaw3AdWH0nJTARzCFhg==}
+    dependencies:
+      '@vue/shared': 3.1.5
+    dev: false
+
+  /@vue/reactivity/3.2.45:
+    resolution: {integrity: sha512-PRvhCcQcyEVohW0P8iQ7HDcIOXRjZfAsOds3N99X/Dzewy8TVhTCT4uXpAHfoKjVTJRA0O0K+6QNkDIZAxNi3A==}
+    dependencies:
+      '@vue/shared': 3.2.45
+    dev: false
+
+  /@vue/shared/3.1.5:
+    resolution: {integrity: sha512-oJ4F3TnvpXaQwZJNF3ZK+kLPHKarDmJjJ6jyzVNDKH9md1dptjC7lWR//jrGuLdek/U6iltWxqAnYOu8gCiOvA==}
+    dev: false
+
+  /@vue/shared/3.2.45:
+    resolution: {integrity: sha512-Ewzq5Yhimg7pSztDV+RH1UDKBzmtqieXQlpTVm2AwraoRL/Rks96mvd8Vgi7Lj+h+TH8dv7mXD3FRZR3TUvbSg==}
+    dev: false
+
   /abbrev/1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
     dev: true
@@ -906,6 +948,12 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /alpinejs/3.10.5:
+    resolution: {integrity: sha512-qlvnal44Gof2XVfm/lef8fYpXKxR9fjdSki7aFB/9THyFvbsRKZ6lM5SjxXpIs7B0faJt7bgpK2K25gzrraXJw==}
+    dependencies:
+      '@vue/reactivity': 3.1.5
+    dev: false
 
   /ansi-align/3.0.1:
     resolution: {integrity: sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==}

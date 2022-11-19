@@ -26,33 +26,18 @@ const linkedin_url = import.meta.env.PUBLIC_LINKEDIN_URL;
         ><LinkedIn />
       </HeaderLink>
     </div>
-    <!--  -->
 
-    <!--  -->
+    <!-- TODO: Testing -->
+    <div
+      class="absolute top-0 right-0 pr-5 pt-5 lg:hidden"
+      x-data="{ open: false }"
+    >
+      <button class="text-6xl" @click="open = ! open">≡</button>
 
-    <div class="absolute top-0 right-0 lg:hidden">
-      <button
-        id="mobile-button"
-        role="button"
-        aria-label="Mobile menu button"
-        class="peer transition-all duration-200"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-16 h-16 text-gray-400 mt-8 mr-8 hover:text-gray-300"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
-        </svg>
-      </button>
       <div
-        class='w-[300px] bg-gray-900 absolute top-0 right-0 z-10 after:content-[""] after:inline-block after:absolute after:top-0 after:h-full after:-z-20 peer-focus:top-0 peer-focus:opacity-100 peer-focus:visible transition-all duration-300 invisible opacity-0 flex flex-col gap-10 py-10'
+        class="flex w-screen flex-col bg-gray-900 p-10 gap-10 absolute top-0 right-0 z-10"
+        x-show="open"
+        @click.outside="open = false"
       >
         <HeaderLink href="/projects" aria-label="List of Projects"
           >Projects</HeaderLink
@@ -71,23 +56,18 @@ const linkedin_url = import.meta.env.PUBLIC_LINKEDIN_URL;
         >
       </div>
     </div>
+
+    <!-- ! Desktop Nav -->
+    <nav class="hidden lg:flex lg:items-start lg:flex-col lg:gap-4">
+      <HeaderLink href="/projects" aria-label="List of Projects"
+        >Projects</HeaderLink
+      >
+      <HeaderLink href="/snippets" aria-label="Code Snippets"
+        >Snippets</HeaderLink
+      >
+      <HeaderLink href="/contact" aria-label="How to contact me"
+        >Contact</HeaderLink
+      >
+    </nav>
   </div>
-
-  <!-- end -->
-
-  <!-- </div> -->
-
-  <!-- TODO: Testing -->
-
-  <!-- ! Desktop Nav -->
-  <nav class="hidden lg:flex lg:items-start lg:flex-col lg:gap-4">
-    <HeaderLink href="/projects" aria-label="List of Projects"
-      >Projects</HeaderLink
-    >
-    <HeaderLink href="/snippets" aria-label="Code Snippets">Snippets</HeaderLink
-    >
-    <HeaderLink href="/contact" aria-label="How to contact me"
-      >Contact</HeaderLink
-    >
-  </nav>
 </header>
