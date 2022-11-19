@@ -19,15 +19,24 @@ const linkedin_url = import.meta.env.PUBLIC_LINKEDIN_URL;
       Fraud analyst & front-end developer.
     </p>
     <div class="hidden lg:flex lg:flex-row lg:items-center lg:gap-6">
-      <HeaderLink href={github_url}><GitHub /></HeaderLink>
-      <HeaderLink href={linkedin_url}><LinkedIn /></HeaderLink>
+      <HeaderLink href={github_url} aria-label="GitHub Profile"
+        ><GitHub />
+      </HeaderLink>
+      <HeaderLink href={linkedin_url} aria-label="LinkedIn Profile"
+        ><LinkedIn />
+      </HeaderLink>
     </div>
     <!--  -->
 
     <!--  -->
 
     <div class="absolute top-0 right-0 lg:hidden">
-      <button class="peer transition-all duration-200">
+      <button
+        id="mobile-button"
+        role="button"
+        aria-label="Mobile menu button"
+        class="peer transition-all duration-200"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -45,11 +54,21 @@ const linkedin_url = import.meta.env.PUBLIC_LINKEDIN_URL;
       <div
         class='w-screen bg-gray-900 absolute top-0 right-0 z-10 after:content-[""] after:inline-block after:absolute after:top-0 after:h-full after:-z-20 peer-focus:top-0 peer-focus:opacity-100 peer-focus:visible transition-all duration-300 invisible opacity-0 flex flex-col gap-10 py-10'
       >
-        <HeaderLink href="/projects">Projects</HeaderLink>
-        <HeaderLink href="/snippets">Snippets</HeaderLink>
-        <HeaderLink href="/contact">Contact</HeaderLink>
-        <HeaderLink href={github_url}>GitHub</HeaderLink>
-        <HeaderLink href={linkedin_url}>LinkedIn</HeaderLink>
+        <HeaderLink href="/projects" aria-label="List of Projects"
+          >Projects</HeaderLink
+        >
+        <HeaderLink href="/snippets" aria-label="Code Snippets"
+          >Snippets</HeaderLink
+        >
+        <HeaderLink href="/contact" aria-label="How to contact me"
+          >Contact</HeaderLink
+        >
+        <HeaderLink href={github_url} aria-label="GitHub Profile"
+          >GitHub</HeaderLink
+        >
+        <HeaderLink href={linkedin_url} aria-label="LinkedIn Profile"
+          >LinkedIn</HeaderLink
+        >
       </div>
     </div>
   </div>
@@ -62,8 +81,13 @@ const linkedin_url = import.meta.env.PUBLIC_LINKEDIN_URL;
 
   <!-- ! Desktop Nav -->
   <nav class="hidden lg:flex lg:items-start lg:flex-col lg:gap-4">
-    <HeaderLink href="/projects">Projects</HeaderLink>
-    <HeaderLink href="/snippets">Snippets</HeaderLink>
-    <HeaderLink href="/contact">Contact</HeaderLink>
+    <HeaderLink href="/projects" aria-label="List of Projects"
+      >Projects</HeaderLink
+    >
+    <HeaderLink href="/snippets" aria-label="Code Snippets">Snippets</HeaderLink
+    >
+    <HeaderLink href="/contact" aria-label="How to contact me"
+      >Contact</HeaderLink
+    >
   </nav>
 </header>
