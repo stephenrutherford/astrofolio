@@ -2,7 +2,7 @@
 const { url, title, pubDate } = Astro.props;
 ---
 
-<a href={url} class="col-span-2 lg:col-span-1">
+<a href={url} rel="prefetch" class="col-span-2 lg:col-span-1">
   <div class="card-article-container">
     <p class="">{title}</p>
     <p class="card-article-date">

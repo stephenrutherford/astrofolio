@@ -8,9 +8,21 @@ import vercel from "@astrojs/vercel/serverless";
 import image from "@astrojs/image";
 
 // https://astro.build/config
+import prefetch from "@astrojs/prefetch";
+
+// https://astro.build/config
 export default defineConfig({
   site: "https://rutherford.dev",
-  integrations: [mdx(), sitemap(), tailwind(), image()],
+  integrations: [
+    mdx(),
+    sitemap(),
+    tailwind(),
+    image(),
+    prefetch({
+      // Allow up to three links to be prefetched concurrently
+      throttle: 3,
+    }),
+  ],
   output: "server",
   adapter: vercel(),
   markdown: {

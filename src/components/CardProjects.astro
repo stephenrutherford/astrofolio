@@ -3,7 +3,7 @@ import { Image } from "@astrojs/image/components";
 const { url, heroImage, title } = Astro.props;
 ---
 
-<a href={url}>
+<a href={url} rel="prefetch">
   <div class="card-project-container">
     <Image
       class="card-project-image"
